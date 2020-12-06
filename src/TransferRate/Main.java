@@ -18,10 +18,10 @@ import java.io.*;
 
 public class Main extends Application {
 
-    BankAccount bankAccount = new BankAccount(0,0,0);
+    BankAccount bankAccount = new BankAccount(0, 0, 0);
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
 
         //Created the Vbox layout and added 10 spacing between each element
         VBox vBox = new VBox(10);
@@ -31,7 +31,7 @@ public class Main extends Application {
         vBox.setAlignment(Pos.BASELINE_CENTER);
 
         //Scene creation
-        Scene scene = new Scene(vBox, 600,400);
+        Scene scene = new Scene(vBox, 600, 400);
 
         //Elements creation (buttons, textfields, etc.)
         Label balanceLabel = new Label("Solde : " + bankAccount.getBalanceCurrentAccount());
@@ -43,8 +43,8 @@ public class Main extends Application {
 
         Button transferButton = new Button("Versement");
         Button expenseButton = new Button("Dépense");
-        Button saveButton = new Button ("Sauvegarder");
-        Button loadButton = new Button ("Charger");
+        Button saveButton = new Button("Sauvegarder");
+        Button loadButton = new Button("Charger");
 
         //This hBox is contained in a vBox to have two horizontal elements in a vertical box - to transfer and expense
         HBox hBox = new HBox(25, transferButton, expenseButton);
@@ -61,7 +61,7 @@ public class Main extends Application {
             public void handle(ActionEvent e) {
                 if (transferAmountTextField.getText() != null && !transferAmountTextField.getText().isEmpty()) {
                     //Update balance after transfer
-                    bankAccount.setBalanceCurrentAccount(bankAccount.getBalanceCurrentAccount() +  Double.parseDouble(transferAmountTextField.getText()));
+                    bankAccount.setBalanceCurrentAccount(bankAccount.getBalanceCurrentAccount() + Double.parseDouble(transferAmountTextField.getText()));
                     balanceLabel.setText("Solde : " + bankAccount.getBalanceCurrentAccount());
                 }
             }
@@ -77,18 +77,13 @@ public class Main extends Application {
             }
         });
 
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        primaryStage.centerOnScreen();
-        primaryStage.setTitle("Transfer Rate by VACCARI Matteo");
-
         saveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 try {
                     //Serialization to save info
                     File save = new File("C:/Users/Poste/Documents/Projets Java/TransferRate/save.ser");
-                    ObjectOutputStream saveSerialization =  new ObjectOutputStream(new FileOutputStream(save));
+                    ObjectOutputStream saveSerialization = new ObjectOutputStream(new FileOutputStream(save));
                     saveSerialization.writeObject(bankAccount);
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
@@ -102,7 +97,7 @@ public class Main extends Application {
                 try {
                     File save = new File("C:/Users/Poste/Documents/Projets Java/TransferRate/save.ser");
                     ObjectInputStream loadSerialization = new ObjectInputStream(new FileInputStream(save));
-                    bankAccount = (BankAccount)loadSerialization.readObject();
+                    bankAccount = (BankAccount) loadSerialization.readObject();
                     balanceLabel.setText("Solde : " + bankAccount.getBalanceCurrentAccount());
 
                 } catch (IOException | ClassNotFoundException e) {
@@ -111,9 +106,12 @@ public class Main extends Application {
             }
         });
 
+        primaryStage.setScene(scene);
+        primaryStage.show();
+        primaryStage.centerOnScreen();
+        primaryStage.setTitle("Transfer Rate by VACCARI Matteo");
 
     }
-
 
 
     public static void main(String[] args) {
