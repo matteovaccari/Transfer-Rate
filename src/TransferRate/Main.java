@@ -111,6 +111,18 @@ public class Main extends Application {
         primaryStage.centerOnScreen();
         primaryStage.setTitle("Transfer Rate by VACCARI Matteo");
 
+        //If a save file exists, get info from it
+        File save = new File("C:/Users/Poste/Documents/Projets Java/TransferRate/save.ser");
+        if(save.exists()){
+            try {
+                ObjectInputStream loadSerialization = new ObjectInputStream(new FileInputStream(save));
+                bankAccount = (BankAccount) loadSerialization.readObject();
+                balanceLabel.setText("Solde : " + bankAccount.getBalanceCurrentAccount());
+
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
