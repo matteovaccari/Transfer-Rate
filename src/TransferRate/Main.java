@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
@@ -20,14 +21,14 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
 
         //Created the Vbox layout and added 10 spacing between each element
-        VBox root = new VBox(10);
+        VBox vBox = new VBox(10);
 
         //Padding and alignment adjustment
-        root.setPadding(new Insets(25));
-        root.setAlignment(Pos.BASELINE_CENTER);
+        vBox.setPadding(new Insets(25));
+        vBox.setAlignment(Pos.BASELINE_CENTER);
 
         //Scene creation
-        Scene scene = new Scene(root, 600,400);
+        Scene scene = new Scene(vBox, 600,400);
 
         //Elements creation (buttons, textfields, etc.)
         Label balanceLabel = new Label("Solde : " + bankAccount.getBalanceCurrentAccount());
@@ -38,7 +39,11 @@ public class Main extends Application {
         Button transferButton = new Button("Virement");
         Button expenseButton = new Button("Dépense");
 
-        root.getChildren().addAll(balanceLabel, transferButton, expenseButton, transferAmountTextField);
+        //This hBox is contained in a vBox to have two horizontal elements in a vertical box
+        HBox hBox = new HBox(25, transferButton, expenseButton);
+        hBox.setAlignment(Pos.BASELINE_CENTER);
+
+        vBox.getChildren().addAll(balanceLabel, hBox, transferAmountTextField);
 
         //Listener on transferButton
         transferButton.setOnAction(new EventHandler<ActionEvent>() {
