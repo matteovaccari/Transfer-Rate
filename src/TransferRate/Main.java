@@ -47,18 +47,24 @@ public class Main extends Application {
         Button expenseButton = new Button("Dépense");
         Button saveButton = new Button("Sauvegarder");
         Button loadButton = new Button("Charger");
+        Button selectCurrentAccount = new Button("Compte courant");
+        Button selectSavingAccount = new Button("Compte épargne");
+        Button selectProAccount = new Button("Compte pro");
 
         //This hBox is contained in a vBox to have two horizontal elements in a vertical box for balance Labels
         HBox balanceLabelsHBox = new HBox(25, balanceCurrentAccountLabel, balanceSavingAccountLabel, balanceProAccountLabel);
         balanceLabelsHBox.setAlignment(Pos.BASELINE_CENTER);
-        //Same to transfer and expense buttons
-        HBox transferAndExpenseHBox = new HBox(25, transferButton, expenseButton);
+        //Same to select account buttons
+        HBox selectAccountHBox = new HBox(25, selectCurrentAccount, selectSavingAccount, selectProAccount);
+        selectAccountHBox.setAlignment(Pos.BASELINE_CENTER);
+        //Same to transfer and expense buttons and texfield
+        HBox transferAndExpenseHBox = new HBox(25, transferAmountTextField, transferButton, expenseButton);
         transferAndExpenseHBox.setAlignment(Pos.BASELINE_CENTER);
         //Same to save and load buttons
         HBox saveAndLoadHBox = new HBox(25, saveButton, loadButton);
         saveAndLoadHBox.setAlignment(Pos.BASELINE_CENTER);
 
-        vBox.getChildren().addAll(balanceLabelsHBox, transferAndExpenseHBox, transferAmountTextField, saveAndLoadHBox);
+        vBox.getChildren().addAll(balanceLabelsHBox, selectAccountHBox, transferAndExpenseHBox, saveAndLoadHBox);
 
         //Listener on each Button
         transferButton.setOnAction(new EventHandler<ActionEvent>() {
