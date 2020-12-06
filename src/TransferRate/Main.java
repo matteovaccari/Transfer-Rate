@@ -36,8 +36,9 @@ public class Main extends Application {
         transferAmountTextField.setPromptText("Montant...");
 
         Button transferButton = new Button("Virement");
+        Button expenseButton = new Button("Dépense");
 
-        root.getChildren().addAll(balanceLabel, transferButton, transferAmountTextField);
+        root.getChildren().addAll(balanceLabel, transferButton, expenseButton, transferAmountTextField);
 
         //Listener on transferButton
         transferButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -45,6 +46,16 @@ public class Main extends Application {
             public void handle(ActionEvent e) {
                 if (transferAmountTextField.getText() != null && !transferAmountTextField.getText().isEmpty()) {
                     balance = balance + Double.parseDouble(transferAmountTextField.getText());
+                    balanceLabel.setText("Solde : " + balance);
+                }
+            }
+        });
+
+        expenseButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if (transferAmountTextField.getText() != null && !transferAmountTextField.getText().isEmpty()) {
+                    balance = balance - Double.parseDouble(transferAmountTextField.getText());
                     balanceLabel.setText("Solde : " + balance);
                 }
             }
