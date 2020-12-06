@@ -2,9 +2,15 @@ package TransferRate;
 
 public class BankAccount {
 
-    private double balanceCurrentAccount;
+    private double balanceCurrentAccount = 0;
     private double balanceSavingAccount;
     private double balanceProAccount;
+
+    public BankAccount(double balanceCurrentAccount, double balanceSavingAccount, double balanceProAccount) {
+        this.setBalanceCurrentAccount(balanceCurrentAccount);
+        this.setBalanceSavingAccount(balanceSavingAccount);
+        this.setBalanceProAccount(balanceProAccount);
+    }
 
     public double getBalanceCurrentAccount() {
         return balanceCurrentAccount;

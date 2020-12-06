@@ -14,7 +14,7 @@ import javafx.scene.control.Label;
 
 public class Main extends Application {
 
-    double balance = 0;
+    BankAccount bankAccount = new BankAccount(0,0,0);
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -30,7 +30,7 @@ public class Main extends Application {
         Scene scene = new Scene(root, 600,400);
 
         //Elements creation (buttons, textfields, etc.)
-        Label balanceLabel = new Label("Solde : " + balance);
+        Label balanceLabel = new Label("Solde : " + bankAccount.getBalanceCurrentAccount());
 
         TextField transferAmountTextField = new TextField();
         transferAmountTextField.setPromptText("Montant...");
@@ -45,8 +45,8 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent e) {
                 if (transferAmountTextField.getText() != null && !transferAmountTextField.getText().isEmpty()) {
-                    balance = balance + Double.parseDouble(transferAmountTextField.getText());
-                    balanceLabel.setText("Solde : " + balance);
+                    bankAccount.setBalanceCurrentAccount(bankAccount.getBalanceCurrentAccount() +  Double.parseDouble(transferAmountTextField.getText()));
+                    balanceLabel.setText("Solde : " + bankAccount.getBalanceCurrentAccount());
                 }
             }
         });
@@ -55,8 +55,8 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 if (transferAmountTextField.getText() != null && !transferAmountTextField.getText().isEmpty()) {
-                    balance = balance - Double.parseDouble(transferAmountTextField.getText());
-                    balanceLabel.setText("Solde : " + balance);
+                    bankAccount.setBalanceCurrentAccount(bankAccount.getBalanceCurrentAccount() - Double.parseDouble(transferAmountTextField.getText()));
+                    balanceLabel.setText("Solde : " + bankAccount.getBalanceCurrentAccount());
                 }
             }
         });
