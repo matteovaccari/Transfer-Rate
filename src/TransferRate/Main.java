@@ -31,7 +31,7 @@ public class Main extends Application {
         vBox.setAlignment(Pos.BASELINE_CENTER);
 
         //Scene creation
-        Scene scene = new Scene(vBox, 600, 400);
+        Scene scene = new Scene(vBox, 800, 600);
 
         //Elements creation (buttons, textfields, etc.)
         Label balanceCurrentAccountLabel = new Label("Compte courant: " + bankAccount.getBalanceCurrentAccount());
@@ -80,7 +80,6 @@ public class Main extends Application {
                 }
             }
         });
-
         expenseButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -94,7 +93,6 @@ public class Main extends Application {
                 }
             }
         });
-
         saveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -108,7 +106,6 @@ public class Main extends Application {
                 }
             }
         });
-
         loadButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -121,6 +118,30 @@ public class Main extends Application {
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
                 }
+            }
+        });
+        selectCurrentAccount.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                balanceCurrentAccountLabel.setText("-->Compte courant: " + bankAccount.getBalanceCurrentAccount());
+                balanceSavingAccountLabel.setText("Compte Epargne: " + bankAccount.getBalanceSavingAccount());
+                balanceProAccountLabel.setText("Compte Pro: " + bankAccount.getBalanceProAccount());
+            }
+        });
+        selectSavingAccount.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                balanceCurrentAccountLabel.setText("Compte courant: " + bankAccount.getBalanceCurrentAccount());
+                balanceSavingAccountLabel.setText("-->Compte Epargne: " + bankAccount.getBalanceSavingAccount());
+                balanceProAccountLabel.setText("Compte Pro: " + bankAccount.getBalanceProAccount());
+            }
+        });
+        selectProAccount.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                balanceCurrentAccountLabel.setText("Compte courant: " + bankAccount.getBalanceCurrentAccount());
+                balanceSavingAccountLabel.setText("Compte Epargne: " + bankAccount.getBalanceSavingAccount());
+                balanceProAccountLabel.setText("-->Compte Pro: " + bankAccount.getBalanceProAccount());
             }
         });
 
