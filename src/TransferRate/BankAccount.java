@@ -5,8 +5,8 @@ import java.io.Serializable;
 public class BankAccount implements Serializable {
 
     private double balanceCurrentAccount = 0;
-    private double balanceSavingAccount;
-    private double balanceProAccount;
+    private double balanceSavingAccount = 0;
+    private double balanceProAccount = 0;
 
     public BankAccount(double balanceCurrentAccount, double balanceSavingAccount, double balanceProAccount) {
         this.setBalanceCurrentAccount(balanceCurrentAccount);

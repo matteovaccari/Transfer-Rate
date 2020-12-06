@@ -34,7 +34,9 @@ public class Main extends Application {
         Scene scene = new Scene(vBox, 600, 400);
 
         //Elements creation (buttons, textfields, etc.)
-        Label balanceLabel = new Label("Solde : " + bankAccount.getBalanceCurrentAccount());
+        Label balanceCurrentAccountLabel = new Label("Compte courant: " + bankAccount.getBalanceCurrentAccount());
+        Label balanceSavingAccountLabel = new Label("Compte Epargne: " + bankAccount.getBalanceSavingAccount());
+        Label balanceProAccountLabel = new Label("Compte Pro: " + bankAccount.getBalanceProAccount());
 
         TextField transferAmountTextField = new TextField();
         transferAmountTextField.setPromptText("Montant...");
@@ -46,14 +48,17 @@ public class Main extends Application {
         Button saveButton = new Button("Sauvegarder");
         Button loadButton = new Button("Charger");
 
-        //This hBox is contained in a vBox to have two horizontal elements in a vertical box - to transfer and expense
-        HBox hBox = new HBox(25, transferButton, expenseButton);
-        hBox.setAlignment(Pos.BASELINE_CENTER);
-        //Same for this hBox, to save and load
+        //This hBox is contained in a vBox to have two horizontal elements in a vertical box for balance Labels
+        HBox balanceLabelsHBox = new HBox(25, balanceCurrentAccountLabel, balanceSavingAccountLabel, balanceProAccountLabel);
+        balanceLabelsHBox.setAlignment(Pos.BASELINE_CENTER);
+        //Same to transfer and expense buttons
+        HBox transferAndExpenseHBox = new HBox(25, transferButton, expenseButton);
+        transferAndExpenseHBox.setAlignment(Pos.BASELINE_CENTER);
+        //Same to save and load buttons
         HBox saveAndLoadHBox = new HBox(25, saveButton, loadButton);
         saveAndLoadHBox.setAlignment(Pos.BASELINE_CENTER);
 
-        vBox.getChildren().addAll(balanceLabel, hBox, transferAmountTextField, saveAndLoadHBox);
+        vBox.getChildren().addAll(balanceLabelsHBox, transferAndExpenseHBox, transferAmountTextField, saveAndLoadHBox);
 
         //Listener on each Button
         transferButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -65,7 +70,7 @@ public class Main extends Application {
                     //Limiting digits to xxx.xx
                     bankAccount.setBalanceCurrentAccount(Math.round(bankAccount.getBalanceCurrentAccount()* 100.0)/100.00);
 
-                    balanceLabel.setText("Solde : " + bankAccount.getBalanceCurrentAccount());
+                    balanceCurrentAccountLabel.setText("Solde : " + bankAccount.getBalanceCurrentAccount());
                 }
             }
         });
@@ -79,7 +84,7 @@ public class Main extends Application {
                     //Limiting digits to xxx.xx
                     bankAccount.setBalanceCurrentAccount(Math.round(bankAccount.getBalanceCurrentAccount()* 100.0)/100.00);
 
-                    balanceLabel.setText("Solde : " + bankAccount.getBalanceCurrentAccount());
+                    balanceCurrentAccountLabel.setText("Solde : " + bankAccount.getBalanceCurrentAccount());
                 }
             }
         });
@@ -105,7 +110,7 @@ public class Main extends Application {
                     File save = new File("C:/Users/Poste/Documents/Projets Java/TransferRate/save.ser");
                     ObjectInputStream loadSerialization = new ObjectInputStream(new FileInputStream(save));
                     bankAccount = (BankAccount) loadSerialization.readObject();
-                    balanceLabel.setText("Solde : " + bankAccount.getBalanceCurrentAccount());
+                    balanceCurrentAccountLabel.setText("Solde : " + bankAccount.getBalanceCurrentAccount());
 
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
@@ -124,7 +129,7 @@ public class Main extends Application {
                 try {
                     ObjectInputStream loadSerialization = new ObjectInputStream(new FileInputStream(save));
                     bankAccount = (BankAccount) loadSerialization.readObject();
-                    balanceLabel.setText("Solde : " + bankAccount.getBalanceCurrentAccount());
+                    balanceCurrentAccountLabel.setText("Solde : " + bankAccount.getBalanceCurrentAccount());
 
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
