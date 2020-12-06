@@ -62,6 +62,9 @@ public class Main extends Application {
                 if (transferAmountTextField.getText() != null && !transferAmountTextField.getText().isEmpty()) {
                     //Update balance after transfer
                     bankAccount.setBalanceCurrentAccount(bankAccount.getBalanceCurrentAccount() + Double.parseDouble(transferAmountTextField.getText()));
+                    //Limiting digits to xxx.xx
+                    bankAccount.setBalanceCurrentAccount(Math.round(bankAccount.getBalanceCurrentAccount()* 100.0)/100.00);
+
                     balanceLabel.setText("Solde : " + bankAccount.getBalanceCurrentAccount());
                 }
             }
@@ -71,7 +74,11 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 if (transferAmountTextField.getText() != null && !transferAmountTextField.getText().isEmpty()) {
+                    //Update balance after expense
                     bankAccount.setBalanceCurrentAccount(bankAccount.getBalanceCurrentAccount() - Double.parseDouble(transferAmountTextField.getText()));
+                    //Limiting digits to xxx.xx
+                    bankAccount.setBalanceCurrentAccount(Math.round(bankAccount.getBalanceCurrentAccount()* 100.0)/100.00);
+
                     balanceLabel.setText("Solde : " + bankAccount.getBalanceCurrentAccount());
                 }
             }
@@ -112,17 +119,18 @@ public class Main extends Application {
         primaryStage.setTitle("Transfer Rate by VACCARI Matteo");
 
         //If a save file exists, get info from it
-        File save = new File("C:/Users/Poste/Documents/Projets Java/TransferRate/save.ser");
-        if(save.exists()){
-            try {
-                ObjectInputStream loadSerialization = new ObjectInputStream(new FileInputStream(save));
-                bankAccount = (BankAccount) loadSerialization.readObject();
-                balanceLabel.setText("Solde : " + bankAccount.getBalanceCurrentAccount());
+            File save = new File("C:/Users/Poste/Documents/Projets Java/TransferRate/save.ser");
+            if(save.exists()){
+                try {
+                    ObjectInputStream loadSerialization = new ObjectInputStream(new FileInputStream(save));
+                    bankAccount = (BankAccount) loadSerialization.readObject();
+                    balanceLabel.setText("Solde : " + bankAccount.getBalanceCurrentAccount());
 
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
-        }
+
     }
 
 
