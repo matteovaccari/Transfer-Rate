@@ -1,6 +1,8 @@
 package TransferRate;
 
-public class BankAccount {
+import java.io.Serializable;
+
+public class BankAccount implements Serializable {
 
     private double balanceCurrentAccount = 0;
     private double balanceSavingAccount;
