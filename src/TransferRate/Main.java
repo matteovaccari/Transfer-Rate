@@ -19,6 +19,7 @@ import java.io.*;
 public class Main extends Application {
 
     BankAccount bankAccount = new BankAccount(0, 0, 0);
+    int accountTypeNumber = 1;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -34,7 +35,7 @@ public class Main extends Application {
         Scene scene = new Scene(vBox, 800, 600);
 
         //Elements creation (buttons, textfields, etc.)
-        Label balanceCurrentAccountLabel = new Label("Compte courant: " + bankAccount.getBalanceCurrentAccount());
+        Label balanceCurrentAccountLabel = new Label("-->Compte courant: " + bankAccount.getBalanceCurrentAccount());
         Label balanceSavingAccountLabel = new Label("Compte Epargne: " + bankAccount.getBalanceSavingAccount());
         Label balanceProAccountLabel = new Label("Compte Pro: " + bankAccount.getBalanceProAccount());
 
@@ -71,12 +72,30 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent e) {
                 if (transferAmountTextField.getText() != null && !transferAmountTextField.getText().isEmpty()) {
-                    //Update balance after transfer
-                    bankAccount.setBalanceCurrentAccount(bankAccount.getBalanceCurrentAccount() + Double.parseDouble(transferAmountTextField.getText()));
-                    //Limiting digits to xxx.xx
-                    bankAccount.setBalanceCurrentAccount(Math.round(bankAccount.getBalanceCurrentAccount()* 100.0)/100.00);
+                    switch (accountTypeNumber){
+                        //Current account
+                        case 1:
+                            bankAccount.setBalanceCurrentAccount(bankAccount.getBalanceCurrentAccount() + Double.parseDouble(transferAmountTextField.getText()));
+                            //Limiting digits to xxx.xx
 
-                    balanceCurrentAccountLabel.setText("Solde : " + bankAccount.getBalanceCurrentAccount());
+                            bankAccount.setBalanceCurrentAccount(Math.round(bankAccount.getBalanceCurrentAccount()* 100.0)/100.00);
+                            balanceCurrentAccountLabel.setText("-->Compte courant : " + bankAccount.getBalanceCurrentAccount());
+                            break;
+                        //Saving account
+                        case 2:
+                            bankAccount.setBalanceSavingAccount(bankAccount.getBalanceSavingAccount() + Double.parseDouble(transferAmountTextField.getText()));
+                            bankAccount.setBalanceSavingAccount(Math.round(bankAccount.getBalanceSavingAccount()* 100.0)/100.00);
+
+                            balanceSavingAccountLabel.setText("-->Compte épargne : " + bankAccount.getBalanceSavingAccount());
+                            break;
+                        //Pro account
+                        case 3:
+                            bankAccount.setBalanceProAccount(bankAccount.getBalanceProAccount() + Double.parseDouble(transferAmountTextField.getText()));
+                            bankAccount.setBalanceProAccount(Math.round(bankAccount.getBalanceProAccount()* 100.0)/100.00);
+
+                            balanceProAccountLabel.setText("-->Compte pro : " + bankAccount.getBalanceProAccount());
+                            break;
+                    }
                 }
             }
         });
@@ -84,12 +103,31 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 if (transferAmountTextField.getText() != null && !transferAmountTextField.getText().isEmpty()) {
-                    //Update balance after expense
-                    bankAccount.setBalanceCurrentAccount(bankAccount.getBalanceCurrentAccount() - Double.parseDouble(transferAmountTextField.getText()));
-                    //Limiting digits to xxx.xx
-                    bankAccount.setBalanceCurrentAccount(Math.round(bankAccount.getBalanceCurrentAccount()* 100.0)/100.00);
+                    switch(accountTypeNumber){
+                        //Current account selected
+                        case 1 :
+                            //Update balance after expense
+                            bankAccount.setBalanceCurrentAccount(bankAccount.getBalanceCurrentAccount() - Double.parseDouble(transferAmountTextField.getText()));
+                            //Limiting digits to xxx.xx
+                            bankAccount.setBalanceCurrentAccount(Math.round(bankAccount.getBalanceCurrentAccount()* 100.0)/100.00);
 
-                    balanceCurrentAccountLabel.setText("Solde : " + bankAccount.getBalanceCurrentAccount());
+                            balanceCurrentAccountLabel.setText("-->Compte courant : " + bankAccount.getBalanceCurrentAccount());
+                            break;
+                        //Saving account selected
+                        case 2 :
+                            bankAccount.setBalanceSavingAccount(bankAccount.getBalanceSavingAccount() - Double.parseDouble(transferAmountTextField.getText()));
+                            bankAccount.setBalanceSavingAccount(Math.round(bankAccount.getBalanceSavingAccount()* 100.0)/100.00);
+
+                            balanceSavingAccountLabel.setText("-->Compte épargne : " + bankAccount.getBalanceSavingAccount());
+                            break;
+                        //Pro account selected
+                        case 3 :
+                            bankAccount.setBalanceProAccount(bankAccount.getBalanceProAccount() - Double.parseDouble(transferAmountTextField.getText()));
+                            bankAccount.setBalanceProAccount(Math.round(bankAccount.getBalanceProAccount()* 100.0)/100.00);
+
+                            balanceProAccountLabel.setText("-->Compte pro : " + bankAccount.getBalanceProAccount());
+                            break;
+                    }
                 }
             }
         });
@@ -113,7 +151,9 @@ public class Main extends Application {
                     File save = new File("C:/Users/Poste/Documents/Projets Java/TransferRate/save.ser");
                     ObjectInputStream loadSerialization = new ObjectInputStream(new FileInputStream(save));
                     bankAccount = (BankAccount) loadSerialization.readObject();
-                    balanceCurrentAccountLabel.setText("Solde : " + bankAccount.getBalanceCurrentAccount());
+                    balanceCurrentAccountLabel.setText("-->Compte courant : " + bankAccount.getBalanceCurrentAccount());
+                    balanceSavingAccountLabel.setText("-->Compte épargne : " + bankAccount.getBalanceSavingAccount());
+                    balanceProAccountLabel.setText("-->Compte pro : " + bankAccount.getBalanceProAccount());
 
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
@@ -126,6 +166,8 @@ public class Main extends Application {
                 balanceCurrentAccountLabel.setText("-->Compte courant: " + bankAccount.getBalanceCurrentAccount());
                 balanceSavingAccountLabel.setText("Compte Epargne: " + bankAccount.getBalanceSavingAccount());
                 balanceProAccountLabel.setText("Compte Pro: " + bankAccount.getBalanceProAccount());
+                //Set Account type var to 1 (current account selected)
+                accountTypeNumber = 1;
             }
         });
         selectSavingAccount.setOnAction(new EventHandler<ActionEvent>() {
@@ -134,14 +176,18 @@ public class Main extends Application {
                 balanceCurrentAccountLabel.setText("Compte courant: " + bankAccount.getBalanceCurrentAccount());
                 balanceSavingAccountLabel.setText("-->Compte Epargne: " + bankAccount.getBalanceSavingAccount());
                 balanceProAccountLabel.setText("Compte Pro: " + bankAccount.getBalanceProAccount());
+                //Set Account type var to 2 (saving account selected)
+                accountTypeNumber = 2;
             }
         });
         selectProAccount.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 balanceCurrentAccountLabel.setText("Compte courant: " + bankAccount.getBalanceCurrentAccount());
-                balanceSavingAccountLabel.setText("Compte Epargne: " + bankAccount.getBalanceSavingAccount());
-                balanceProAccountLabel.setText("-->Compte Pro: " + bankAccount.getBalanceProAccount());
+                balanceSavingAccountLabel.setText("Compte épargne: " + bankAccount.getBalanceSavingAccount());
+                balanceProAccountLabel.setText("-->Compte pro: " + bankAccount.getBalanceProAccount());
+                //Set Account type var to 3 (pro account selected)
+                accountTypeNumber = 3;
             }
         });
 
@@ -156,7 +202,9 @@ public class Main extends Application {
                 try {
                     ObjectInputStream loadSerialization = new ObjectInputStream(new FileInputStream(save));
                     bankAccount = (BankAccount) loadSerialization.readObject();
-                    balanceCurrentAccountLabel.setText("Solde : " + bankAccount.getBalanceCurrentAccount());
+                    balanceCurrentAccountLabel.setText("-->Compte courant : " + bankAccount.getBalanceCurrentAccount());
+                    balanceSavingAccountLabel.setText("Compte épargne : " + bankAccount.getBalanceSavingAccount());
+                    balanceProAccountLabel.setText("Compte pro : " + bankAccount.getBalanceProAccount());
 
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
