@@ -39,12 +39,12 @@ public class Main extends Application {
         Label balanceSavingAccountLabel = new Label("Compte Epargne: " + bankAccount.getBalanceSavingAccount());
         Label balanceProAccountLabel = new Label("Compte Pro: " + bankAccount.getBalanceProAccount());
 
-        TextField transferAmountTextField = new TextField();
-        transferAmountTextField.setPromptText("Montant...");
-        transferAmountTextField.setPrefWidth(100);
-        transferAmountTextField.setMaxWidth(100);
+        TextField amountTextField = new TextField();
+        amountTextField.setPromptText("Montant...");
+        amountTextField.setPrefWidth(100);
+        amountTextField.setMaxWidth(100);
 
-        Button transferButton = new Button("Versement");
+        Button depositButton = new Button("Versement");
         Button expenseButton = new Button("Dépense");
         Button saveButton = new Button("Sauvegarder");
         Button loadButton = new Button("Charger");
@@ -58,24 +58,24 @@ public class Main extends Application {
         //Same to select account buttons
         HBox selectAccountHBox = new HBox(25, selectCurrentAccount, selectSavingAccount, selectProAccount);
         selectAccountHBox.setAlignment(Pos.BASELINE_CENTER);
-        //Same to transfer and expense buttons and texfield
-        HBox transferAndExpenseHBox = new HBox(25, transferAmountTextField, transferButton, expenseButton);
-        transferAndExpenseHBox.setAlignment(Pos.BASELINE_CENTER);
+        //Same to deposit and expense buttons and texfield
+        HBox depositAndExpenseHBox = new HBox(25, amountTextField, depositButton, expenseButton);
+        depositAndExpenseHBox.setAlignment(Pos.BASELINE_CENTER);
         //Same to save and load buttons
         HBox saveAndLoadHBox = new HBox(25, saveButton, loadButton);
         saveAndLoadHBox.setAlignment(Pos.BASELINE_CENTER);
 
-        vBox.getChildren().addAll(balanceLabelsHBox, selectAccountHBox, transferAndExpenseHBox, saveAndLoadHBox);
+        vBox.getChildren().addAll(balanceLabelsHBox, selectAccountHBox, depositAndExpenseHBox, saveAndLoadHBox);
 
         //Listener on each Button
-        transferButton.setOnAction(new EventHandler<ActionEvent>() {
+        depositButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                if (transferAmountTextField.getText() != null && !transferAmountTextField.getText().isEmpty()) {
+                if (amountTextField.getText() != null && !amountTextField.getText().isEmpty()) {
                     switch (accountTypeNumber){
                         //Current account
                         case 1:
-                            bankAccount.setBalanceCurrentAccount(bankAccount.getBalanceCurrentAccount() + Double.parseDouble(transferAmountTextField.getText()));
+                            bankAccount.setBalanceCurrentAccount(bankAccount.getBalanceCurrentAccount() + Double.parseDouble(amountTextField.getText()));
                             //Limiting digits to xxx.xx
 
                             bankAccount.setBalanceCurrentAccount(Math.round(bankAccount.getBalanceCurrentAccount()* 100.0)/100.00);
@@ -83,14 +83,14 @@ public class Main extends Application {
                             break;
                         //Saving account
                         case 2:
-                            bankAccount.setBalanceSavingAccount(bankAccount.getBalanceSavingAccount() + Double.parseDouble(transferAmountTextField.getText()));
+                            bankAccount.setBalanceSavingAccount(bankAccount.getBalanceSavingAccount() + Double.parseDouble(amountTextField.getText()));
                             bankAccount.setBalanceSavingAccount(Math.round(bankAccount.getBalanceSavingAccount()* 100.0)/100.00);
 
                             balanceSavingAccountLabel.setText("-->Compte épargne : " + bankAccount.getBalanceSavingAccount());
                             break;
                         //Pro account
                         case 3:
-                            bankAccount.setBalanceProAccount(bankAccount.getBalanceProAccount() + Double.parseDouble(transferAmountTextField.getText()));
+                            bankAccount.setBalanceProAccount(bankAccount.getBalanceProAccount() + Double.parseDouble(amountTextField.getText()));
                             bankAccount.setBalanceProAccount(Math.round(bankAccount.getBalanceProAccount()* 100.0)/100.00);
 
                             balanceProAccountLabel.setText("-->Compte pro : " + bankAccount.getBalanceProAccount());
@@ -102,12 +102,12 @@ public class Main extends Application {
         expenseButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                if (transferAmountTextField.getText() != null && !transferAmountTextField.getText().isEmpty()) {
+                if (amountTextField.getText() != null && !amountTextField.getText().isEmpty()) {
                     switch(accountTypeNumber){
                         //Current account selected
                         case 1 :
                             //Update balance after expense
-                            bankAccount.setBalanceCurrentAccount(bankAccount.getBalanceCurrentAccount() - Double.parseDouble(transferAmountTextField.getText()));
+                            bankAccount.setBalanceCurrentAccount(bankAccount.getBalanceCurrentAccount() - Double.parseDouble(amountTextField.getText()));
                             //Limiting digits to xxx.xx
                             bankAccount.setBalanceCurrentAccount(Math.round(bankAccount.getBalanceCurrentAccount()* 100.0)/100.00);
 
@@ -115,14 +115,14 @@ public class Main extends Application {
                             break;
                         //Saving account selected
                         case 2 :
-                            bankAccount.setBalanceSavingAccount(bankAccount.getBalanceSavingAccount() - Double.parseDouble(transferAmountTextField.getText()));
+                            bankAccount.setBalanceSavingAccount(bankAccount.getBalanceSavingAccount() - Double.parseDouble(amountTextField.getText()));
                             bankAccount.setBalanceSavingAccount(Math.round(bankAccount.getBalanceSavingAccount()* 100.0)/100.00);
 
                             balanceSavingAccountLabel.setText("-->Compte épargne : " + bankAccount.getBalanceSavingAccount());
                             break;
                         //Pro account selected
                         case 3 :
-                            bankAccount.setBalanceProAccount(bankAccount.getBalanceProAccount() - Double.parseDouble(transferAmountTextField.getText()));
+                            bankAccount.setBalanceProAccount(bankAccount.getBalanceProAccount() - Double.parseDouble(amountTextField.getText()));
                             bankAccount.setBalanceProAccount(Math.round(bankAccount.getBalanceProAccount()* 100.0)/100.00);
 
                             balanceProAccountLabel.setText("-->Compte pro : " + bankAccount.getBalanceProAccount());
@@ -164,8 +164,8 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 balanceCurrentAccountLabel.setText("-->Compte courant: " + bankAccount.getBalanceCurrentAccount());
-                balanceSavingAccountLabel.setText("Compte Epargne: " + bankAccount.getBalanceSavingAccount());
-                balanceProAccountLabel.setText("Compte Pro: " + bankAccount.getBalanceProAccount());
+                balanceSavingAccountLabel.setText("Compte épargne: " + bankAccount.getBalanceSavingAccount());
+                balanceProAccountLabel.setText("Compte pro: " + bankAccount.getBalanceProAccount());
                 //Set Account type var to 1 (current account selected)
                 accountTypeNumber = 1;
             }
