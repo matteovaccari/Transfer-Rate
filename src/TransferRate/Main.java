@@ -8,6 +8,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -64,8 +65,16 @@ public class Main extends Application {
         //Same to save and load buttons
         HBox saveAndLoadHBox = new HBox(25, saveButton, loadButton);
         saveAndLoadHBox.setAlignment(Pos.BASELINE_CENTER);
+        //ListView to show transaction history for each account
+        ListView transactionHistoryListView = new ListView();
+   /*     transactionHistoryListView.getItems().add(2);
+        transactionHistoryListView.getItems().add(8.9);
+        transactionHistoryListView.getItems().add(27.2); */
 
-        vBox.getChildren().addAll(balanceLabelsHBox, selectAccountHBox, depositAndExpenseHBox, saveAndLoadHBox);
+        HBox transactionHistoryHBox = new HBox(25, transactionHistoryListView);
+
+
+        vBox.getChildren().addAll(balanceLabelsHBox, selectAccountHBox, depositAndExpenseHBox, saveAndLoadHBox, transactionHistoryHBox);
 
         //Listener on each Button
         depositButton.setOnAction(new EventHandler<ActionEvent>() {
