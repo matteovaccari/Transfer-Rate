@@ -11,6 +11,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 
@@ -36,8 +38,11 @@ public class Main extends Application {
 
         //Elements creation (buttons, textfields, etc.)
         Label balanceCurrentAccountLabel = new Label("-->Compte courant: " + bankAccount.getBalanceCurrentAccount() + "€");
+        balanceCurrentAccountLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 13));
         Label balanceSavingAccountLabel = new Label("Compte Epargne: " + bankAccount.getBalanceSavingAccount() + "€");
+        balanceSavingAccountLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 13));
         Label balanceProAccountLabel = new Label("Compte Pro: " + bankAccount.getBalanceProAccount() + "€");
+        balanceProAccountLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 13));
 
         TextField amountTextField = new TextField();
         amountTextField.setPromptText("Montant...");
@@ -65,11 +70,16 @@ public class Main extends Application {
         HBox saveAndLoadHBox = new HBox(25, saveButton, loadButton);
         saveAndLoadHBox.setAlignment(Pos.BASELINE_CENTER);
         //ListView to show transaction history for each account
+        Label transactionHistoryLabel = new Label("Historique de transactions : ");
+        transactionHistoryLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
         ListView<Double> transactionHistoryListView = new ListView<Double>();
 
-        HBox transactionHistoryHBox = new HBox(25, transactionHistoryListView);
+        VBox transactionHistoryVBox = new VBox(9);
+        HBox transactionListViewHBox = new HBox(25, transactionHistoryListView);
+        HBox transactionListViewTitleLabelHBox = new HBox(25, transactionHistoryLabel);
+        transactionHistoryVBox.getChildren().addAll(transactionListViewTitleLabelHBox, transactionListViewHBox);
 
-        vBox.getChildren().addAll(balanceLabelsHBox, selectAccountHBox, depositAndExpenseHBox, saveAndLoadHBox, transactionHistoryHBox);
+        vBox.getChildren().addAll(balanceLabelsHBox, selectAccountHBox, depositAndExpenseHBox, saveAndLoadHBox, transactionHistoryVBox);
 
         //Listener on each Button
         depositButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -202,8 +212,8 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 balanceCurrentAccountLabel.setText("Compte courant: " + bankAccount.getBalanceCurrentAccount() + "€");
-                balanceSavingAccountLabel.setText("-->Compte Epargne: " + bankAccount.getBalanceSavingAccount() + "€");
-                balanceProAccountLabel.setText("Compte Pro: " + bankAccount.getBalanceProAccount() + "€");
+                balanceSavingAccountLabel.setText("-->Compte épargne: " + bankAccount.getBalanceSavingAccount() + "€");
+                balanceProAccountLabel.setText("Compte pro: " + bankAccount.getBalanceProAccount() + "€");
 
                 transactionHistoryListView.getItems().clear();
                 int i = 0;
