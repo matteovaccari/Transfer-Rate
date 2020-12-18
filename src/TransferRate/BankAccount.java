@@ -1,23 +1,24 @@
 package TransferRate;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.*;
 
 public class BankAccount implements Serializable {
 
     private double balanceCurrentAccount = 0;
     private double balanceSavingAccount = 0;
     private double balanceProAccount = 0;
-
-    private List<Double> transactionHistoryCurrentAccountList;
-    private List<Double> transactionHistorySavingAccountList;
-    private List<Double> transactionHistoryProAccountList;
-
+    private List<Double> currentAccountTransactionHistory;
+    private List<Double> savingAccountTransactionHistory;
+    private List<Double> proAccountTransactionHistory;
 
     public BankAccount(double balanceCurrentAccount, double balanceSavingAccount, double balanceProAccount) {
         this.setBalanceCurrentAccount(balanceCurrentAccount);
         this.setBalanceSavingAccount(balanceSavingAccount);
         this.setBalanceProAccount(balanceProAccount);
+        currentAccountTransactionHistory = new ArrayList<Double>();
+        savingAccountTransactionHistory = new ArrayList<Double>();
+        proAccountTransactionHistory = new ArrayList<Double>();
     }
 
     public double getBalanceCurrentAccount() {
@@ -44,27 +45,27 @@ public class BankAccount implements Serializable {
         this.balanceProAccount = balanceProAccount;
     }
 
-    public List<Double> getTransactionHistoryCurrentAccountList() {
-        return transactionHistoryCurrentAccountList;
+    public List<Double> getCurrentAccountTransactionHistory() {
+        return currentAccountTransactionHistory;
     }
 
-    public void setTransactionHistoryCurrentAccountList(List<Double> transactionHistoryCurrentAccountList) {
-        this.transactionHistoryCurrentAccountList = transactionHistoryCurrentAccountList;
+    public void setCurrentAccountTransactionHistory(Double amount) {
+        this.currentAccountTransactionHistory.add(amount);
     }
 
-    public List<Double> getTransactionHistorySavingAccountList() {
-        return transactionHistorySavingAccountList;
+    public List<Double> getSavingAccountTransactionHistory() {
+        return savingAccountTransactionHistory;
     }
 
-    public void setTransactionHistorySavingAccountList(List<Double> transactionHistorySavingAccountList) {
-        this.transactionHistorySavingAccountList = transactionHistorySavingAccountList;
+    public void setSavingAccountTransactionHistory(Double amount) {
+        this.savingAccountTransactionHistory.add(amount);
     }
 
-    public List<Double> getTransactionHistoryProAccountList() {
-        return transactionHistoryProAccountList;
+    public List<Double> getProAccountTransactionHistory() {
+        return proAccountTransactionHistory;
     }
 
-    public void setTransactionHistoryProAccountList(List<Double> transactionHistoryProAccountList) {
-        this.transactionHistoryProAccountList = transactionHistoryProAccountList;
+    public void setProAccountTransactionHistory(Double amount) {
+        this.proAccountTransactionHistory.add(amount);
     }
 }

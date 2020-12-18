@@ -2,7 +2,6 @@ package TransferRate;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -36,9 +35,9 @@ public class Main extends Application {
         Scene scene = new Scene(vBox, 800, 600);
 
         //Elements creation (buttons, textfields, etc.)
-        Label balanceCurrentAccountLabel = new Label("-->Compte courant: " + bankAccount.getBalanceCurrentAccount());
-        Label balanceSavingAccountLabel = new Label("Compte Epargne: " + bankAccount.getBalanceSavingAccount());
-        Label balanceProAccountLabel = new Label("Compte Pro: " + bankAccount.getBalanceProAccount());
+        Label balanceCurrentAccountLabel = new Label("-->Compte courant: " + bankAccount.getBalanceCurrentAccount() + "€");
+        Label balanceSavingAccountLabel = new Label("Compte Epargne: " + bankAccount.getBalanceSavingAccount() + "€");
+        Label balanceProAccountLabel = new Label("Compte Pro: " + bankAccount.getBalanceProAccount() + "€");
 
         TextField amountTextField = new TextField();
         amountTextField.setPromptText("Montant...");
@@ -66,13 +65,9 @@ public class Main extends Application {
         HBox saveAndLoadHBox = new HBox(25, saveButton, loadButton);
         saveAndLoadHBox.setAlignment(Pos.BASELINE_CENTER);
         //ListView to show transaction history for each account
-        ListView transactionHistoryListView = new ListView();
-   /*     transactionHistoryListView.getItems().add(2);
-        transactionHistoryListView.getItems().add(8.9);
-        transactionHistoryListView.getItems().add(27.2); */
+        ListView<Double> transactionHistoryListView = new ListView<Double>();
 
         HBox transactionHistoryHBox = new HBox(25, transactionHistoryListView);
-
 
         vBox.getChildren().addAll(balanceLabelsHBox, selectAccountHBox, depositAndExpenseHBox, saveAndLoadHBox, transactionHistoryHBox);
 
@@ -84,25 +79,29 @@ public class Main extends Application {
                     switch (accountTypeNumber){
                         //Current account
                         case 1:
+                            //Deposing money to account
                             bankAccount.setBalanceCurrentAccount(bankAccount.getBalanceCurrentAccount() + Double.parseDouble(amountTextField.getText()));
                             //Limiting digits to xxx.xx
-
                             bankAccount.setBalanceCurrentAccount(Math.round(bankAccount.getBalanceCurrentAccount()* 100.0)/100.00);
-                            balanceCurrentAccountLabel.setText("-->Compte courant : " + bankAccount.getBalanceCurrentAccount());
+                            balanceCurrentAccountLabel.setText("-->Compte courant : " + bankAccount.getBalanceCurrentAccount() + "€");
+                            //Adding amount to transaction history
+                            bankAccount.setCurrentAccountTransactionHistory(Double.parseDouble(amountTextField.getText()));
                             break;
                         //Saving account
                         case 2:
                             bankAccount.setBalanceSavingAccount(bankAccount.getBalanceSavingAccount() + Double.parseDouble(amountTextField.getText()));
                             bankAccount.setBalanceSavingAccount(Math.round(bankAccount.getBalanceSavingAccount()* 100.0)/100.00);
 
-                            balanceSavingAccountLabel.setText("-->Compte épargne : " + bankAccount.getBalanceSavingAccount());
+                            balanceSavingAccountLabel.setText("-->Compte épargne : " + bankAccount.getBalanceSavingAccount() + "€");
+                            bankAccount.setSavingAccountTransactionHistory(Double.parseDouble(amountTextField.getText()));
                             break;
                         //Pro account
                         case 3:
                             bankAccount.setBalanceProAccount(bankAccount.getBalanceProAccount() + Double.parseDouble(amountTextField.getText()));
                             bankAccount.setBalanceProAccount(Math.round(bankAccount.getBalanceProAccount()* 100.0)/100.00);
 
-                            balanceProAccountLabel.setText("-->Compte pro : " + bankAccount.getBalanceProAccount());
+                            balanceProAccountLabel.setText("-->Compte pro : " + bankAccount.getBalanceProAccount() + "€");
+                            bankAccount.setProAccountTransactionHistory(Double.parseDouble(amountTextField.getText()));
                             break;
                     }
                 }
@@ -120,21 +119,25 @@ public class Main extends Application {
                             //Limiting digits to xxx.xx
                             bankAccount.setBalanceCurrentAccount(Math.round(bankAccount.getBalanceCurrentAccount()* 100.0)/100.00);
 
-                            balanceCurrentAccountLabel.setText("-->Compte courant : " + bankAccount.getBalanceCurrentAccount());
+                            balanceCurrentAccountLabel.setText("-->Compte courant : " + bankAccount.getBalanceCurrentAccount() + "€");
+                            //Adding amount to transaction history (in negative, a deposit of 50€ will be writed -50)
+                            bankAccount.setCurrentAccountTransactionHistory(Double.parseDouble(amountTextField.getText()) - Double.parseDouble(amountTextField.getText()) * 2);
                             break;
                         //Saving account selected
                         case 2 :
                             bankAccount.setBalanceSavingAccount(bankAccount.getBalanceSavingAccount() - Double.parseDouble(amountTextField.getText()));
                             bankAccount.setBalanceSavingAccount(Math.round(bankAccount.getBalanceSavingAccount()* 100.0)/100.00);
 
-                            balanceSavingAccountLabel.setText("-->Compte épargne : " + bankAccount.getBalanceSavingAccount());
+                            balanceSavingAccountLabel.setText("-->Compte épargne : " + bankAccount.getBalanceSavingAccount() + "€");
+                            bankAccount.setSavingAccountTransactionHistory(Double.parseDouble(amountTextField.getText()) - Double.parseDouble(amountTextField.getText()) * 2);
                             break;
                         //Pro account selected
                         case 3 :
                             bankAccount.setBalanceProAccount(bankAccount.getBalanceProAccount() - Double.parseDouble(amountTextField.getText()));
                             bankAccount.setBalanceProAccount(Math.round(bankAccount.getBalanceProAccount()* 100.0)/100.00);
 
-                            balanceProAccountLabel.setText("-->Compte pro : " + bankAccount.getBalanceProAccount());
+                            balanceProAccountLabel.setText("-->Compte pro : " + bankAccount.getBalanceProAccount() + "€");
+                            bankAccount.setProAccountTransactionHistory(Double.parseDouble(amountTextField.getText()) - Double.parseDouble(amountTextField.getText()) * 2);
                             break;
                     }
                 }
@@ -144,10 +147,11 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 try {
-                    //Serialization to save info
+                    //Serialization to save info for balances and transaction history
                     File save = new File("C:/Users/Poste/Documents/Projets Java/TransferRate/save.ser");
                     ObjectOutputStream saveSerialization = new ObjectOutputStream(new FileOutputStream(save));
                     saveSerialization.writeObject(bankAccount);
+
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
@@ -157,12 +161,20 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 try {
+
                     File save = new File("C:/Users/Poste/Documents/Projets Java/TransferRate/save.ser");
-                    ObjectInputStream loadSerialization = new ObjectInputStream(new FileInputStream(save));
-                    bankAccount = (BankAccount) loadSerialization.readObject();
-                    balanceCurrentAccountLabel.setText("-->Compte courant : " + bankAccount.getBalanceCurrentAccount());
-                    balanceSavingAccountLabel.setText("-->Compte épargne : " + bankAccount.getBalanceSavingAccount());
-                    balanceProAccountLabel.setText("-->Compte pro : " + bankAccount.getBalanceProAccount());
+                    ObjectInputStream loadBalancesSerialization = new ObjectInputStream(new FileInputStream(save));
+                    bankAccount = (BankAccount) loadBalancesSerialization.readObject();
+                    balanceCurrentAccountLabel.setText("-->Compte courant : " + bankAccount.getBalanceCurrentAccount() + "€");
+                    balanceSavingAccountLabel.setText("Compte épargne : " + bankAccount.getBalanceSavingAccount() + "€");
+                    balanceProAccountLabel.setText("Compte pro : " + bankAccount.getBalanceProAccount() + "€");
+                    accountTypeNumber = 1;
+                    transactionHistoryListView.getItems().clear();
+                    int i = 0;
+                    while (i < bankAccount.getCurrentAccountTransactionHistory().size()) {
+                        transactionHistoryListView.getItems().add(bankAccount.getCurrentAccountTransactionHistory().get(i));
+                        i++;
+                    }
 
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
@@ -172,9 +184,16 @@ public class Main extends Application {
         selectCurrentAccount.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                balanceCurrentAccountLabel.setText("-->Compte courant: " + bankAccount.getBalanceCurrentAccount());
-                balanceSavingAccountLabel.setText("Compte épargne: " + bankAccount.getBalanceSavingAccount());
-                balanceProAccountLabel.setText("Compte pro: " + bankAccount.getBalanceProAccount());
+                balanceCurrentAccountLabel.setText("-->Compte courant: " + bankAccount.getBalanceCurrentAccount() + "€");
+                balanceSavingAccountLabel.setText("Compte épargne: " + bankAccount.getBalanceSavingAccount() + "€");
+                balanceProAccountLabel.setText("Compte pro: " + bankAccount.getBalanceProAccount() + "€");
+                //Updating listview
+                transactionHistoryListView.getItems().clear();
+                int i = 0;
+                while (i < bankAccount.getCurrentAccountTransactionHistory().size()) {
+                    transactionHistoryListView.getItems().add(bankAccount.getCurrentAccountTransactionHistory().get(i));
+                    i++;
+                }
                 //Set Account type var to 1 (current account selected)
                 accountTypeNumber = 1;
             }
@@ -182,9 +201,16 @@ public class Main extends Application {
         selectSavingAccount.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                balanceCurrentAccountLabel.setText("Compte courant: " + bankAccount.getBalanceCurrentAccount());
-                balanceSavingAccountLabel.setText("-->Compte Epargne: " + bankAccount.getBalanceSavingAccount());
-                balanceProAccountLabel.setText("Compte Pro: " + bankAccount.getBalanceProAccount());
+                balanceCurrentAccountLabel.setText("Compte courant: " + bankAccount.getBalanceCurrentAccount() + "€");
+                balanceSavingAccountLabel.setText("-->Compte Epargne: " + bankAccount.getBalanceSavingAccount() + "€");
+                balanceProAccountLabel.setText("Compte Pro: " + bankAccount.getBalanceProAccount() + "€");
+
+                transactionHistoryListView.getItems().clear();
+                int i = 0;
+                while (i < bankAccount.getSavingAccountTransactionHistory().size()) {
+                    transactionHistoryListView.getItems().add(bankAccount.getSavingAccountTransactionHistory().get(i));
+                    i++;
+                }
                 //Set Account type var to 2 (saving account selected)
                 accountTypeNumber = 2;
             }
@@ -192,9 +218,15 @@ public class Main extends Application {
         selectProAccount.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                balanceCurrentAccountLabel.setText("Compte courant: " + bankAccount.getBalanceCurrentAccount());
-                balanceSavingAccountLabel.setText("Compte épargne: " + bankAccount.getBalanceSavingAccount());
-                balanceProAccountLabel.setText("-->Compte pro: " + bankAccount.getBalanceProAccount());
+                balanceCurrentAccountLabel.setText("Compte courant: " + bankAccount.getBalanceCurrentAccount() + "€");
+                balanceSavingAccountLabel.setText("Compte épargne: " + bankAccount.getBalanceSavingAccount() + "€");
+                balanceProAccountLabel.setText("-->Compte pro: " + bankAccount.getBalanceProAccount() + "€");
+                transactionHistoryListView.getItems().clear();
+                int i = 0;
+                while (i < bankAccount.getProAccountTransactionHistory().size()) {
+                    transactionHistoryListView.getItems().add(bankAccount.getProAccountTransactionHistory().get(i));
+                    i++;
+                }
                 //Set Account type var to 3 (pro account selected)
                 accountTypeNumber = 3;
             }
@@ -206,19 +238,26 @@ public class Main extends Application {
         primaryStage.setTitle("Transfer Rate by VACCARI Matteo");
 
         //If a save file exists, get info from it
-            File save = new File("C:/Users/Poste/Documents/Projets Java/TransferRate/save.ser");
-            if(save.exists()){
-                try {
-                    ObjectInputStream loadSerialization = new ObjectInputStream(new FileInputStream(save));
-                    bankAccount = (BankAccount) loadSerialization.readObject();
-                    balanceCurrentAccountLabel.setText("-->Compte courant : " + bankAccount.getBalanceCurrentAccount());
-                    balanceSavingAccountLabel.setText("Compte épargne : " + bankAccount.getBalanceSavingAccount());
-                    balanceProAccountLabel.setText("Compte pro : " + bankAccount.getBalanceProAccount());
+        File save = new File("C:/Users/Poste/Documents/Projets Java/TransferRate/save.ser");
+        if(save.exists()){
+            try {
+                ObjectInputStream loadSerialization = new ObjectInputStream(new FileInputStream(save));
+                bankAccount = (BankAccount) loadSerialization.readObject();
+                balanceCurrentAccountLabel.setText("-->Compte courant : " + bankAccount.getBalanceCurrentAccount() + "€");
+                balanceSavingAccountLabel.setText("Compte épargne : " + bankAccount.getBalanceSavingAccount() + "€");
+                balanceProAccountLabel.setText("Compte pro : " + bankAccount.getBalanceProAccount() + "€");
 
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
+                int i= 0 ;
+                System.out.println(bankAccount.getCurrentAccountTransactionHistory().size());
+                while (i < bankAccount.getCurrentAccountTransactionHistory().size()) {
+                    transactionHistoryListView.getItems().add(bankAccount.getCurrentAccountTransactionHistory().get(i));
+                    i++;
                 }
+
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
             }
+        }
 
     }
 
