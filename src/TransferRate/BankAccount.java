@@ -11,6 +11,7 @@ public class BankAccount implements Serializable {
     private List<Double> currentAccountTransactionHistory;
     private List<Double> savingAccountTransactionHistory;
     private List<Double> proAccountTransactionHistory;
+    private List<Double> lastMonthsBalancesList;
 
     public BankAccount(double balanceCurrentAccount, double balanceSavingAccount, double balanceProAccount) {
         this.setBalanceCurrentAccount(balanceCurrentAccount);
@@ -19,6 +20,7 @@ public class BankAccount implements Serializable {
         currentAccountTransactionHistory = new ArrayList<Double>();
         savingAccountTransactionHistory = new ArrayList<Double>();
         proAccountTransactionHistory = new ArrayList<Double>();
+        lastMonthsBalancesList = new ArrayList<Double>();
     }
 
     public double getBalanceCurrentAccount() {
@@ -67,5 +69,22 @@ public class BankAccount implements Serializable {
 
     public void setProAccountTransactionHistory(Double amount) {
         this.proAccountTransactionHistory.add(amount);
+    }
+
+    public List<Double> getLastMonthsBalancesList() {
+        return lastMonthsBalancesList;
+    }
+
+    public void setLastMonthsBalancesList(Double amount) {
+        if (lastMonthsBalancesList == null) {
+            lastMonthsBalancesList = new ArrayList<Double>();
+        }
+        this.lastMonthsBalancesList.add(amount);
+    }
+
+    public void removeLastMonthBalance() {
+        if (lastMonthsBalancesList != null) {
+            this.lastMonthsBalancesList.remove(lastMonthsBalancesList.size() - 1);
+        }
     }
 }

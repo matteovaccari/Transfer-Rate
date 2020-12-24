@@ -62,7 +62,7 @@ public class Main extends Application {
         Button selectSavingAccountButton = new Button("Compte épargne");
         Button selectProAccountButton = new Button("Compte pro");
         Button endCurrentMonthButton = new Button("Fin du mois");
-        Button deleteLastMonthButton = new Button( "Suppr. dernier mois");
+        Button deleteLastMonthButton = new Button("Suppr. dernier mois");
         Button editLastMonthButton = new Button("Modifier dernier mois");
 
         //This hBox is contained in a vBox to have two horizontal elements in a vertical box for balance Labels
@@ -113,13 +113,13 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent e) {
                 if (depositOrTransferAmountTextField.getText() != null && !depositOrTransferAmountTextField.getText().isEmpty()) {
-                    switch (accountTypeNumber){
+                    switch (accountTypeNumber) {
                         //Current account
                         case 1:
                             //Deposing money to account
                             bankAccount.setBalanceCurrentAccount(bankAccount.getBalanceCurrentAccount() + Double.parseDouble(depositOrTransferAmountTextField.getText()));
                             //Limiting digits to xxx.xx
-                            bankAccount.setBalanceCurrentAccount(Math.round(bankAccount.getBalanceCurrentAccount()* 100.0)/100.00);
+                            bankAccount.setBalanceCurrentAccount(Math.round(bankAccount.getBalanceCurrentAccount() * 100.0) / 100.00);
                             balanceCurrentAccountLabel.setText("-->Compte courant : " + bankAccount.getBalanceCurrentAccount() + "€");
                             //Adding amount to transaction history
                             bankAccount.setCurrentAccountTransactionHistory(Double.parseDouble(depositOrTransferAmountTextField.getText()));
@@ -127,7 +127,7 @@ public class Main extends Application {
                         //Saving account
                         case 2:
                             bankAccount.setBalanceSavingAccount(bankAccount.getBalanceSavingAccount() + Double.parseDouble(depositOrTransferAmountTextField.getText()));
-                            bankAccount.setBalanceSavingAccount(Math.round(bankAccount.getBalanceSavingAccount()* 100.0)/100.00);
+                            bankAccount.setBalanceSavingAccount(Math.round(bankAccount.getBalanceSavingAccount() * 100.0) / 100.00);
 
                             balanceSavingAccountLabel.setText("-->Compte épargne : " + bankAccount.getBalanceSavingAccount() + "€");
                             bankAccount.setSavingAccountTransactionHistory(Double.parseDouble(depositOrTransferAmountTextField.getText()));
@@ -135,7 +135,7 @@ public class Main extends Application {
                         //Pro account
                         case 3:
                             bankAccount.setBalanceProAccount(bankAccount.getBalanceProAccount() + Double.parseDouble(depositOrTransferAmountTextField.getText()));
-                            bankAccount.setBalanceProAccount(Math.round(bankAccount.getBalanceProAccount()* 100.0)/100.00);
+                            bankAccount.setBalanceProAccount(Math.round(bankAccount.getBalanceProAccount() * 100.0) / 100.00);
 
                             balanceProAccountLabel.setText("-->Compte pro : " + bankAccount.getBalanceProAccount() + "€");
                             bankAccount.setProAccountTransactionHistory(Double.parseDouble(depositOrTransferAmountTextField.getText()));
@@ -148,30 +148,30 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 if (depositOrTransferAmountTextField.getText() != null && !depositOrTransferAmountTextField.getText().isEmpty()) {
-                    switch(accountTypeNumber){
+                    switch (accountTypeNumber) {
                         //Current account selected
-                        case 1 :
+                        case 1:
                             //Update balance after expense
                             bankAccount.setBalanceCurrentAccount(bankAccount.getBalanceCurrentAccount() - Double.parseDouble(depositOrTransferAmountTextField.getText()));
                             //Limiting digits to xxx.xx
-                            bankAccount.setBalanceCurrentAccount(Math.round(bankAccount.getBalanceCurrentAccount()* 100.0)/100.00);
+                            bankAccount.setBalanceCurrentAccount(Math.round(bankAccount.getBalanceCurrentAccount() * 100.0) / 100.00);
 
                             balanceCurrentAccountLabel.setText("-->Compte courant : " + bankAccount.getBalanceCurrentAccount() + "€");
                             //Adding amount to transaction history (in negative, a deposit of 50€ will be writed -50)
                             bankAccount.setCurrentAccountTransactionHistory(Double.parseDouble(depositOrTransferAmountTextField.getText()) - Double.parseDouble(depositOrTransferAmountTextField.getText()) * 2);
                             break;
                         //Saving account selected
-                        case 2 :
+                        case 2:
                             bankAccount.setBalanceSavingAccount(bankAccount.getBalanceSavingAccount() - Double.parseDouble(depositOrTransferAmountTextField.getText()));
-                            bankAccount.setBalanceSavingAccount(Math.round(bankAccount.getBalanceSavingAccount()* 100.0)/100.00);
+                            bankAccount.setBalanceSavingAccount(Math.round(bankAccount.getBalanceSavingAccount() * 100.0) / 100.00);
 
                             balanceSavingAccountLabel.setText("-->Compte épargne : " + bankAccount.getBalanceSavingAccount() + "€");
                             bankAccount.setSavingAccountTransactionHistory(Double.parseDouble(depositOrTransferAmountTextField.getText()) - Double.parseDouble(depositOrTransferAmountTextField.getText()) * 2);
                             break;
                         //Pro account selected
-                        case 3 :
+                        case 3:
                             bankAccount.setBalanceProAccount(bankAccount.getBalanceProAccount() - Double.parseDouble(depositOrTransferAmountTextField.getText()));
-                            bankAccount.setBalanceProAccount(Math.round(bankAccount.getBalanceProAccount()* 100.0)/100.00);
+                            bankAccount.setBalanceProAccount(Math.round(bankAccount.getBalanceProAccount() * 100.0) / 100.00);
 
                             balanceProAccountLabel.setText("-->Compte pro : " + bankAccount.getBalanceProAccount() + "€");
                             bankAccount.setProAccountTransactionHistory(Double.parseDouble(depositOrTransferAmountTextField.getText()) - Double.parseDouble(depositOrTransferAmountTextField.getText()) * 2);
@@ -212,6 +212,9 @@ public class Main extends Application {
                         transactionHistoryListView.getItems().add(bankAccount.getCurrentAccountTransactionHistory().get(i));
                         i++;
                     }
+
+                 /*   int o = 0;
+                    while (o < bankAccount.) */
 
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
@@ -268,6 +271,22 @@ public class Main extends Application {
                 accountTypeNumber = 3;
             }
         });
+        endCurrentMonthButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                lastMonthsListView.getItems().add(bankAccount.getBalanceCurrentAccount());
+                bankAccount.setLastMonthsBalancesList(bankAccount.getBalanceCurrentAccount());
+                System.out.println(bankAccount.getLastMonthsBalancesList().get(0));
+            }
+        });
+
+        deleteLastMonthButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                lastMonthsListView.getItems().remove(lastMonthsListView.getItems().size() - 1);
+                bankAccount.removeLastMonthBalance();
+            }
+        });
 
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -276,7 +295,7 @@ public class Main extends Application {
 
         //If a save file exists, get info from it
         File save = new File("C:/Users/Poste/Documents/Projets Java/TransferRate/save.ser");
-        if(save.exists()){
+        if (save.exists()) {
             try {
                 ObjectInputStream loadSerialization = new ObjectInputStream(new FileInputStream(save));
                 bankAccount = (BankAccount) loadSerialization.readObject();
@@ -284,11 +303,20 @@ public class Main extends Application {
                 balanceSavingAccountLabel.setText("Compte épargne : " + bankAccount.getBalanceSavingAccount() + "€");
                 balanceProAccountLabel.setText("Compte pro : " + bankAccount.getBalanceProAccount() + "€");
 
-                int i= 0 ;
-                System.out.println(bankAccount.getCurrentAccountTransactionHistory().size());
+                //Loading transaction history listview
+                int i = 0;
                 while (i < bankAccount.getCurrentAccountTransactionHistory().size()) {
                     transactionHistoryListView.getItems().add(bankAccount.getCurrentAccountTransactionHistory().get(i));
                     i++;
+                }
+
+                //Loading last months balances listview
+                if (bankAccount.getLastMonthsBalancesList() != null) {
+                    int j = 0;
+                    while (j < bankAccount.getLastMonthsBalancesList().size()) {
+                        lastMonthsListView.getItems().add(bankAccount.getLastMonthsBalancesList().get(j));
+                        j++;
+                    }
                 }
 
             } catch (IOException | ClassNotFoundException e) {
