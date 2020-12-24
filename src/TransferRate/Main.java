@@ -69,6 +69,7 @@ public class Main extends Application {
         //Same to save and load buttons
         HBox saveAndLoadHBox = new HBox(25, saveButton, loadButton);
         saveAndLoadHBox.setAlignment(Pos.BASELINE_CENTER);
+
         //ListView to show transaction history for each account
         Label transactionHistoryLabel = new Label("Historique de transactions : ");
         transactionHistoryLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
@@ -79,7 +80,20 @@ public class Main extends Application {
         HBox transactionListViewTitleLabelHBox = new HBox(25, transactionHistoryLabel);
         transactionHistoryVBox.getChildren().addAll(transactionListViewTitleLabelHBox, transactionListViewHBox);
 
-        vBox.getChildren().addAll(balanceLabelsHBox, selectAccountHBox, depositAndExpenseHBox, saveAndLoadHBox, transactionHistoryVBox);
+        //ListView to show last months balances
+        Label lastMonthsLabel = new Label("Solde des derniers mois : ");
+        lastMonthsLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+        ListView<Double> lastMonthsListView = new ListView<Double>();
+
+        VBox lastMonthsVbox = new VBox(9);
+        HBox lastMonthsListViewHBox = new HBox(25, lastMonthsListView);
+        HBox lastMonthsListViewTitleLabelHBox = new HBox(25, lastMonthsLabel);
+        lastMonthsVbox.getChildren().addAll(lastMonthsListViewTitleLabelHBox, lastMonthsListViewHBox);
+
+        HBox listViewHBox = new HBox(25);
+        listViewHBox.getChildren().addAll(transactionHistoryVBox, lastMonthsVbox);
+
+        vBox.getChildren().addAll(balanceLabelsHBox, selectAccountHBox, depositAndExpenseHBox, saveAndLoadHBox, listViewHBox);
 
         //Listener on each Button
         depositButton.setOnAction(new EventHandler<ActionEvent>() {
