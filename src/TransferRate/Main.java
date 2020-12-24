@@ -53,15 +53,18 @@ public class Main extends Application {
         Button expenseButton = new Button("Dépense");
         Button saveButton = new Button("Sauvegarder");
         Button loadButton = new Button("Charger");
-        Button selectCurrentAccount = new Button("Compte courant");
-        Button selectSavingAccount = new Button("Compte épargne");
-        Button selectProAccount = new Button("Compte pro");
+        Button selectCurrentAccountButton = new Button("Compte courant");
+        Button selectSavingAccountButton = new Button("Compte épargne");
+        Button selectProAccountButton = new Button("Compte pro");
+        Button endCurrentMonthButton = new Button("Fin du mois");
+        Button deleteLastMonthButton = new Button( "Suppr. dernier mois");
+        Button editLastMonthButton = new Button("Modifier dernier mois");
 
         //This hBox is contained in a vBox to have two horizontal elements in a vertical box for balance Labels
         HBox balanceLabelsHBox = new HBox(25, balanceCurrentAccountLabel, balanceSavingAccountLabel, balanceProAccountLabel);
         balanceLabelsHBox.setAlignment(Pos.BASELINE_CENTER);
         //Same to select account buttons
-        HBox selectAccountHBox = new HBox(25, selectCurrentAccount, selectSavingAccount, selectProAccount);
+        HBox selectAccountHBox = new HBox(25, selectCurrentAccountButton, selectSavingAccountButton, selectProAccountButton);
         selectAccountHBox.setAlignment(Pos.BASELINE_CENTER);
         //Same to deposit and expense buttons and texfield
         HBox depositAndExpenseHBox = new HBox(25, amountTextField, depositButton, expenseButton);
@@ -80,6 +83,10 @@ public class Main extends Application {
         HBox transactionListViewTitleLabelHBox = new HBox(25, transactionHistoryLabel);
         transactionHistoryVBox.getChildren().addAll(transactionListViewTitleLabelHBox, transactionListViewHBox);
 
+        //Vbox to show buttons related to last months balances listview (next comment)
+        VBox lastMonthButtonsVbox = new VBox(20, endCurrentMonthButton, deleteLastMonthButton, editLastMonthButton);
+        lastMonthButtonsVbox.setAlignment(Pos.CENTER);
+
         //ListView to show last months balances
         Label lastMonthsLabel = new Label("Solde des derniers mois : ");
         lastMonthsLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
@@ -91,7 +98,7 @@ public class Main extends Application {
         lastMonthsVbox.getChildren().addAll(lastMonthsListViewTitleLabelHBox, lastMonthsListViewHBox);
 
         HBox listViewHBox = new HBox(25);
-        listViewHBox.getChildren().addAll(transactionHistoryVBox, lastMonthsVbox);
+        listViewHBox.getChildren().addAll(transactionHistoryVBox, lastMonthsVbox, lastMonthButtonsVbox);
 
         vBox.getChildren().addAll(balanceLabelsHBox, selectAccountHBox, depositAndExpenseHBox, saveAndLoadHBox, listViewHBox);
 
@@ -205,7 +212,7 @@ public class Main extends Application {
                 }
             }
         });
-        selectCurrentAccount.setOnAction(new EventHandler<ActionEvent>() {
+        selectCurrentAccountButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 balanceCurrentAccountLabel.setText("-->Compte courant: " + bankAccount.getBalanceCurrentAccount() + "€");
@@ -222,7 +229,7 @@ public class Main extends Application {
                 accountTypeNumber = 1;
             }
         });
-        selectSavingAccount.setOnAction(new EventHandler<ActionEvent>() {
+        selectSavingAccountButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 balanceCurrentAccountLabel.setText("Compte courant: " + bankAccount.getBalanceCurrentAccount() + "€");
@@ -239,7 +246,7 @@ public class Main extends Application {
                 accountTypeNumber = 2;
             }
         });
-        selectProAccount.setOnAction(new EventHandler<ActionEvent>() {
+        selectProAccountButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 balanceCurrentAccountLabel.setText("Compte courant: " + bankAccount.getBalanceCurrentAccount() + "€");
