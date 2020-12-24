@@ -283,7 +283,6 @@ public class Main extends Application {
             public void handle(ActionEvent actionEvent) {
                 lastMonthsListView.getItems().add(bankAccount.getBalanceCurrentAccount());
                 bankAccount.setLastMonthsBalancesList(bankAccount.getBalanceCurrentAccount());
-                System.out.println(bankAccount.getLastMonthsBalancesList().get(0));
             }
         });
         deleteLastMonthButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -291,6 +290,17 @@ public class Main extends Application {
             public void handle(ActionEvent actionEvent) {
                 lastMonthsListView.getItems().remove(lastMonthsListView.getItems().size() - 1);
                 bankAccount.removeLastMonthBalance();
+            }
+        });
+        editLastMonthButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if (editLastMonthBalanceTextField.getText() != null && !editLastMonthBalanceTextField.getText().isEmpty()) {
+                    bankAccount.editLastItemBalanceList(Double.parseDouble(editLastMonthBalanceTextField.getText()));
+                    lastMonthsListView.getItems().remove(lastMonthsListView.getItems().size() - 1);
+                    lastMonthsListView.getItems().add(Double.parseDouble(editLastMonthBalanceTextField.getText()));
+                    
+                }
             }
         });
 

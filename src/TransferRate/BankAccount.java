@@ -87,4 +87,11 @@ public class BankAccount implements Serializable {
             this.lastMonthsBalancesList.remove(lastMonthsBalancesList.size() - 1);
         }
     }
+
+    public void editLastItemBalanceList(Double amount) {
+        if (lastMonthsBalancesList != null) {
+            lastMonthsBalancesList.remove(lastMonthsBalancesList.size() -1);
+            lastMonthsBalancesList.add(amount);
+        }
+    }
 }
