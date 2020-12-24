@@ -213,8 +213,15 @@ public class Main extends Application {
                         i++;
                     }
 
-                 /*   int o = 0;
-                    while (o < bankAccount.) */
+                    //Loading last months balances listview
+                    lastMonthsListView.getItems().clear();
+                    if (bankAccount.getLastMonthsBalancesList() != null) {
+                        int j = 0;
+                        while (j < bankAccount.getLastMonthsBalancesList().size()) {
+                            lastMonthsListView.getItems().add(bankAccount.getLastMonthsBalancesList().get(j));
+                            j++;
+                        }
+                    }
 
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
@@ -279,7 +286,6 @@ public class Main extends Application {
                 System.out.println(bankAccount.getLastMonthsBalancesList().get(0));
             }
         });
-
         deleteLastMonthButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
