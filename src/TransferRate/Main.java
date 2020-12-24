@@ -299,7 +299,7 @@ public class Main extends Application {
                     bankAccount.editLastItemBalanceList(Double.parseDouble(editLastMonthBalanceTextField.getText()));
                     lastMonthsListView.getItems().remove(lastMonthsListView.getItems().size() - 1);
                     lastMonthsListView.getItems().add(Double.parseDouble(editLastMonthBalanceTextField.getText()));
-                    
+
                 }
             }
         });

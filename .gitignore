@@ -44,6 +44,8 @@ TransferRate.iml
 # *.iml
 # *.ipr
 
+save.ser
+
 # CMake
 cmake-build-*/
 
